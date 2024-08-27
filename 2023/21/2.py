@@ -1,24 +1,18 @@
 from collections import deque
 
 graph = []
-startingPoint = ()
 
 with open("data.txt") as f:
-    y = 0
-    for line in f:
+    for y, line in enumerate(f):
         if "S" in line:
-            startingPoint = (line.find("S"), y)
+            start = (line.find("S"), y)
             line.replace("S", ".")
 
         graph.append(line.strip())
-        y += 1
 
-def bfs(startingPoints, totalSteps=1000000, parity = 0):
-    queue = deque([])
-    visited = {}
-    for point in startingPoints:
-        queue.append((point, 0))
-        visited[point] = 0
+def bfs(roots, totalSteps=1000000, parity = 0):
+    queue = deque((x, 0) for x in roots)
+    visited = {x: 0 for x in roots}
     
     while queue:
         coordinates, steps = queue.popleft()
@@ -31,18 +25,16 @@ def bfs(startingPoints, totalSteps=1000000, parity = 0):
             if not (0 <= newX < len(graph[0]) and 0 <= newY < len(graph)):
                 continue
                 
-            if (newX, newY) in visited:
-                continue
-    
-            if graph[newY][newX] == "#":
+            if (newX, newY) in visited or graph[newY][newX] == "#":
                 continue
     
             visited[(newX, newY)] = steps + 1
             queue.append(((newX, newY), steps + 1))
+            
     return len([x for x in visited.values() if x % 2 == parity])
 
-filled0 = bfs([startingPoint])
-filled1 = bfs([startingPoint], parity=1)
+filled0 = bfs([start])
+filled1 = bfs([start], parity=1)
 
 dirs = [(0, 65) #l
     , (130, 65) #r
