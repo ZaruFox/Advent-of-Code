@@ -41,26 +41,17 @@ def bfs(startingPoints, totalSteps=1000000, parity = 0):
             queue.append(((newX, newY), steps + 1))
     return len([x for x in visited.values() if x % 2 == parity])
 
-total0=bfs([startingPoint], 13000000, 0)
-total1=bfs([startingPoint], 13000000, 1)
+filled0 = bfs([startingPoint])
+filled1 = bfs([startingPoint], parity=1)
 
-l = (0, 65)
-r = (130, 65)
-d = (65, 130)
-u = (65, 0)
+dirs = [(0, 65) #l
+    , (130, 65) #r
+    , (65, 130) #d
+    , (65, 0)] #u
 
-l1=bfs([l], 130, 0)
-r1=bfs([r], 130, 0)
-u1=bfs([u], 130, 0)
-d1=bfs([d], 130, 0)
+corners = sum(bfs([x], 130) for x in dirs) 
+innerSides = sum(bfs(x, 130) for x in ([dirs[3], dirs[0]], [dirs[2], dirs[1]], [dirs[3], dirs[1]], [dirs[2], dirs[0]]))
+outerSides = sum(bfs([x], 65) for x in [(0, 0), (130, 0), (0, 130), (130, 130)])
 
-ul1=bfs([u, l], 130, 0)
-dr1=bfs([d, r], 130, 0)
-ur1=bfs([u, r], 130, 0)
-dl1=bfs([d, l], 130, 0)
-
-a = bfs([(0,0)], 65, 0)
-b = bfs([(130,0)], 65, 0)
-c = bfs([(0,130)], 65, 0)
-d = bfs([(130,130)], 65, 0)
-print(202300*(a+b+c+d) + l1+r1+u1+d1+ 202299*(ul1+dr1+ur1+dl1) + 4*(total1)*(202298/4*(2+202298)) + 4*(total0)*((202298/2+1)/2*(1+202299)) + total1)
+length = 202300
+print(length*outerSides + (length-1)*innerSides + (length**2 - 2*length + 1)*filled1 + (length**2)*filled0 + corners)
