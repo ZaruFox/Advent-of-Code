@@ -45,5 +45,6 @@ corners = sum(bfs([x], 130) for x in dirs)
 innerSides = sum(bfs(x, 130) for x in ([dirs[3], dirs[0]], [dirs[2], dirs[1]], [dirs[3], dirs[1]], [dirs[2], dirs[0]]))
 outerSides = sum(bfs([x], 65) for x in [(0, 0), (130, 0), (0, 130), (130, 130)])
 
-length = 202300
+STEPS = 26501365
+length = (STEPS - 65) // 131
 print(length*outerSides + (length-1)*innerSides + (length**2 - 2*length + 1)*filled1 + (length**2)*filled0 + corners)
