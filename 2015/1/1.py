@@ -7,4 +7,7 @@ import math
 import numpy
 
 with open("data.txt") as f:
-    data = f.read().splitlines()
+    data = f.read().strip()
+
+
+print(data.count('(') - data.count(")"))
