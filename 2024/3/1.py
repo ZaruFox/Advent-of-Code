@@ -13,7 +13,7 @@ def mul(a, b):
     return a*b
 
 res = 0
-for match in re.findall(r"mul\([0-9]+,[0-9]+\)", data):
+for match in re.findall(r"mul\(\d+,\d+\)", data):
     res += eval(match)
 
 print(res)

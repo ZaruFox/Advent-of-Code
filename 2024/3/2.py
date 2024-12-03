@@ -14,7 +14,7 @@ def mul(a, b):
 
 res = 0
 enabled = True
-for match in re.findall(r"mul\([0-9]+,[0-9]+\)|do\(\)|don't\(\)", data):
+for match in re.findall(r"mul\(\d+,\d+\)|do\(\)|don't\(\)", data):
     if match == "do()":
         enabled = True
     elif match == "don't()":
