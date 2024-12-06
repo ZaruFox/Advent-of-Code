@@ -7,4 +7,13 @@ import math
 import numpy
 
 with open("data.txt") as f:
-    data = f.read().splitlines()
+    data = f.read()
+
+def mul(a, b):
+    return a*b
+
+res = 0
+for match in re.findall(r"mul\(\d+,\d+\)", data):
+    res += eval(match)
+
+print(res)
