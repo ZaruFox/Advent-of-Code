@@ -4,51 +4,44 @@ from functools import cache
 import itertools
 from heapq import heappop, heappush
 import math
-from cv2 import bilateralFilter
 import numpy
 
 with open("data.txt") as f:
     data = f.read().splitlines()
 
-# oh god
+def checkValid(nums):
+    prev = set()
+    numsSet = set(nums)
+
+    for num in nums:
+        if before[num] & numsSet != prev:
+            return False
+
+        prev.add(num)
+
+    return True
 
 before = defaultdict(set)
 for i, row in enumerate(data):
     if row == "":
         break
 
-    a, b = row.split("|")
-    before[int(b)].add(int(a))
+    a, b = [int(x) for x in row.split("|")]
+    before[b].add(a)
 
 res = 0
 for row in data[i+1:]:
-    nums = list(map(int, row.split(",")))
-    valid = True
+    nums = [int(x) for x in row.split(",")]
 
-    prev = set()
-    for num in nums:
-        needed = before[num] & set(nums)
-
-        if needed & prev != needed:
-            valid = False
-            break
-
-        prev.add(num)
-
-    if valid:
+    if checkValid(nums):
         continue
 
     correct = []
+    numsSet = set(nums)
     while nums:
         for i in range(len(nums)):
-            num = nums[i]
-            needed = before[num] & set(nums)
-            prev = set()
-
-            if needed & prev == needed:
-                nums.pop(i)
-                prev.add(num)
-                correct.append(num)
+            if before[nums[i]] & numsSet == set(correct):
+                correct.append(nums.pop(i))
                 break
 
     res += correct[len(correct)//2]
