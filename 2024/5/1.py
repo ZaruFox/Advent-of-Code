@@ -4,7 +4,6 @@ from functools import cache
 import itertools
 from heapq import heappop, heappush
 import math
-from cv2 import bilateralFilter
 import numpy
 
 with open("data.txt") as f:

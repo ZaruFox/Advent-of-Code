@@ -12,7 +12,7 @@ def isValid(target, i, nums, current=0):
     
     return isValid(target, i+1, nums, current+nums[i]) or \
     isValid(target, i+1, nums, current*nums[i]) or \
-    isValid(target, i+1, nums, int(str(current) + str(nums[i])))
+    isValid(target, i+1, nums, int(f"{current}{nums[i]}"))
 
 
 

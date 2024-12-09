@@ -27,6 +27,4 @@ for locations in antennnas.values():
         for j in range(i+1, len(locations)):
             antinodes |= findAntinodes(*locations[i], *locations[j])
 
-antinodes = [(x, y) for x, y in antinodes if 0 <= x < len(data[0]) and 0 <= y < len(data)]
-
-print(len(antinodes))
+print(len([(x, y) for x, y in antinodes if 0 <= x < len(data[0]) and 0 <= y < len(data)]))
