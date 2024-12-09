@@ -10,47 +10,37 @@ with open("data.txt") as f:
     data = f.read()
 
 files = []
-id = 0
-empty = False
+heaps = [[] for _ in range(10)]
 
-for num in data:
-    num = int(num)
-    if not empty:
-        files.append([id, num])
-        id += 1
+j = 0
+for i, size in enumerate(data):
+    size = int(size)
+
+    if i % 2 == 0:
+        files.append((i//2, j, size))
     else:
-        files.append([-1, num])
+        heappush(heaps[size], j)
 
-    empty = not empty
-
-j = len(files)-1
-while j > 0:
-    id, count = files[j]
-
-    if id == -1:
-        j -= 1
-        continue
-
-    for i, file in enumerate(files[:j]):
-        newId, newCount = file
-        if newId == -1 and newCount >= count:
-            files[j][0] = -1
-            if newCount != count:
-                if files[i+1][0] == -1:
-                    files[i+1][1] += newCount-count
-                else:
-                    files.insert(i+1, [-1, newCount-count])
-                    j += 1
-            files[i] = [id, count]
-            break
-
-    j -= 1
+    j += size
 
 res = 0
-i = 0
-for id, count in files:
-    if id != -1:
-        res += sum(range(i, i+count)) * id
-    i += count
+for id, i, size in files[::-1]:
     
+    heapSize = None 
+    k = math.inf
+    for emptySize in range(size, 10):
+        if (not heaps[emptySize]) or heaps[emptySize][0] >= i:
+            continue
+
+        if heaps[emptySize][0] < k:
+            heapSize = emptySize
+            k = heaps[emptySize][0]
+
+    if heapSize is None:
+        res += sum(range(i, i + size)) * id
+    else:      
+        j = heappop(heaps[heapSize])
+        res += sum(range(j, j + size)) * id
+        heappush(heaps[heapSize-size], j+size)
+
 print(res)

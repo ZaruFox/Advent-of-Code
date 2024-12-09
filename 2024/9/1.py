@@ -9,42 +9,34 @@ import numpy
 with open("data.txt") as f:
     data = f.read()
 
-files = deque()
-i = 0
-empty = False
+files = []
+for i, size in enumerate(data):
+    files.append([i//2 if i % 2 == 0 else -1, int(size)])
 
-for num in data:
-    num = int(num)
-    if not empty:
-        files.append([i, num])
-        i += 1
-    else:
-        files.append([-1, num])
-
-    empty = not empty
-
+l, r = 0, len(files) - 1
 i = 0
 res = 0
 
-while files:
-    id, count = files.popleft()
+while l < r:
+    id, size = files[l]
+    l += 1
     
     if id != -1:
-        res += sum(range(i, i+count)) * id
-        i += count
-    else:
-        while files and count > 0:
-            if files[-1][0] == -1:
-                files.pop()
-                continue
-            
-            totalRemoved = min(count, files[-1][1])
-            res += sum(range(i, i+totalRemoved)) * files[-1][0]
-            i += totalRemoved
-            files[-1][1] -= totalRemoved
-            count -= totalRemoved
-            if files[-1][1] == 0:
-                files.pop()
+        res += sum(range(i, i+size)) * id
+        i += size
+        continue
+
+    for _ in range(size):
+        res += i * files[r][0]
+        i += 1
+        files[r][1] -= 1
+
+        if files[r][1] == 0:
+            r -= 2
+
+            if r < l:
+                break
+
             
     
 
