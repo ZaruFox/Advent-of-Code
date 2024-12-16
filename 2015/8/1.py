@@ -8,3 +8,5 @@ import numpy
 
 with open("data.txt") as f:
     data = f.read().splitlines()
+
+print(sum(len(x) - len(eval(x)) for x in data))

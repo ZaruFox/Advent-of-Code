@@ -8,3 +8,24 @@ import numpy
 
 with open("data.txt") as f:
     data = f.read().splitlines()
+
+adjDict = defaultdict(list)
+for row in data:
+    v1, v2, dist = re.split(r" = | to ", row)
+
+    adjDict[v1].append((v2, int(dist)))
+    adjDict[v2].append((v1, int(dist)))
+
+def dfs(cur, visited):
+    if len(visited) == len(adjDict):
+        return 0
+    
+    res = math.inf
+    for v, dist in adjDict[cur]:
+        if v in visited:
+            continue
+        res = min(res, dfs(v, visited | {v})+dist)
+
+    return res
+
+print(min([dfs(v, {v}) for v in adjDict.keys()]))
