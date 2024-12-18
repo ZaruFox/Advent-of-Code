@@ -5,6 +5,15 @@ import itertools
 from heapq import heappop, heappush
 import math
 import numpy
+from sympy import divisors
 
 with open("data.txt") as f:
-    data = f.read().splitlines()
+    target = int(f.read()) // 10
+
+i = 0
+while True:
+    if sum(divisors(i)) >= target:
+        print(i)
+        break
+
+    i += 1
