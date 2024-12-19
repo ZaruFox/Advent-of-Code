@@ -1,3 +1,4 @@
+from bisect import bisect_left
 from collections import deque, defaultdict, Counter
 import re
 from functools import cache
@@ -22,7 +23,7 @@ def bfs(walls):
         x, y, cost = queue.popleft()
 
         if x == n-1 and y == n-1:
-            return visited
+            return False
 
         if (x, y) in visited:
             continue
@@ -34,14 +35,7 @@ def bfs(walls):
 
             queue.append((dx, dy, cost+1))
 
-    return set()
+    return True
 
-prevVisited = set()
-for i, pos in enumerate(walls):
-    if prevVisited and pos not in prevVisited:
-        continue
-
-    prevVisited = bfs(set(walls[:i+1]))
-    if not prevVisited:
-        print(",".join(str(x) for x in pos))
-        break
+pos = bisect_left(range(len(walls)), 1, key=lambda i: bfs(walls[:i+1]))
+print(",".join(str(x) for x in walls[pos]))
