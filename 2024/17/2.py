@@ -42,7 +42,7 @@ while A != 0:
     B = A % 8   # get last 3 bits of A
     B ^= 7      # flip all bits
 
-    B ^= A // (2**B)  # flip B according to truncated A
+    B ^= A // (2**B)  # flip B according to A truncated by B bits
     B ^= 4  # flip 2nd bit
     print(B % 8) # print last 3 bits of B
 
