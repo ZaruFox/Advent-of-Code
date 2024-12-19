@@ -21,10 +21,10 @@ def dfs(i, a):
         a += b
 
         temp = b ^ 7
-        temp ^= a >> temp
+        temp ^= (a >> temp) & 7
         temp ^= 4
 
-        if temp % 8 == program[i]:
+        if temp == program[i]:
             res += dfs(i-1, a)
         
         a -= b
@@ -33,9 +33,6 @@ def dfs(i, a):
 
 print(min(dfs(len(program)-1, 0)))
 
-
-
-# 2,4,1,7,7,5,4,1,1,4,5,5,0,3,3,0
 """
 while A != 0:
 
